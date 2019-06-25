@@ -5,10 +5,7 @@ const { validate } = use('Validator')
 
 class AuthController {
 
-  async register({ request, auth, response }) {
-
-    console.log(auth);
-
+  async register ({ request, auth, response }) {
     const {
       email,
       password,
@@ -44,7 +41,7 @@ class AuthController {
     })
   }
 
-  async login({ request, auth, response }) {
+  async login ({ request, auth, response }) {
     const email = request.input('email')
     const password = request.input('password')
     try {
@@ -59,6 +56,7 @@ class AuthController {
       } else {
         return response.status(403)
           .send({
+            type: 'error',
             message: 'You don\'t have access to this section',
           })
       }
@@ -71,7 +69,7 @@ class AuthController {
     }
   }
 
-  async logout({ response, auth }) {
+  async logout ({ response, auth }) {
     await auth
       .authenticator('jwt')
       .revokeTokens(true)
