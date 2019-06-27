@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "API documentation project",
   "title": "DailyFit API",
-  "url": "http://127.0.0.1:3333",
+  "url": "http://dailyfit.app",
   "order": [
     "Auth",
     "PostUser"
