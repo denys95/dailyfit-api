@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "adonis-version": "4.1.0",
   "description": "DailyFit API",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "test": "node ace test",
@@ -31,6 +31,7 @@
     "@adonisjs/shield": "~1.0.8",
     "@adonisjs/validator": "~5.0.6",
     "adonis-acl": "~1.1.1",
+    "dotenv": "^8.0.0",
     "moment": "~2.24.0",
     "pg": "~7.11.0"
   },
