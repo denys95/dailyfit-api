@@ -16,7 +16,7 @@ class Exercise extends Model {
       await exercise.save()
 
       return {
-        status: 200,
+        status: 201,
         result: exercise,
         message: '',
       }
@@ -51,8 +51,8 @@ class Exercise extends Model {
     try {
       exercise.delete()
       return {
-        status: 200,
-        result: 'Admin was deleted successfully',
+        status: 204,
+        result: 'Exercise was deleted successfully',
         message: '',
       }
     } catch (e) {

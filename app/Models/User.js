@@ -28,6 +28,41 @@ class User extends Model {
     })
   }
 
+  static async update (user, data) {
+    try {
+      user.merge(data)
+      await user.save()
+      return {
+        status: 200,
+        result: user,
+        message: '',
+      }
+    } catch (e) {
+      return {
+        status: 500,
+        result: 'error',
+        message: e.code,
+      }
+    }
+  }
+
+  static async deleteUser (user) {
+    try {
+      user.delete()
+      return {
+        status: 204,
+        result: 'User was deleted successfully',
+        message: '',
+      }
+    } catch (e) {
+      return {
+        status: 500,
+        result: 'error',
+        message: e.code,
+      }
+    }
+  }
+
   /**
    * A relationship on tokens is required for auth to
    * work. Since features like `refreshTokens` or

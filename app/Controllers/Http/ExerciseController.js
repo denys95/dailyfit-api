@@ -17,13 +17,16 @@ class ExerciseController {
         })
     }
 
-    const result = await list
+    const exercises = await list
       .orderBy(['title', 'id'])
       .fetch()
 
     return response
       .status(200)
-      .send(result)
+      .send({
+        result: exercises,
+        message: '',
+      })
   }
 
   async create ({ request, response }) {
@@ -59,22 +62,33 @@ class ExerciseController {
       return response
         .status(404)
         .send({
-          type: 'error',
+          result: 'error',
           message: 'Not found',
         })
     }
 
     return response
-      .status(200).
-      send(exercise)
+      .status(200)
+      .send({
+        result: exercise,
+        message: '',
+      })
   }
 
   async update ({ request, params, response }) {
-    const { id } = params
+
+    if (!params.id) {
+      return response
+        .status(400)
+        .send({
+          result: 'error',
+          message: 'Id is required',
+        })
+    }
 
     let exercise = await Exercise
       .query()
-      .where('id', id)
+      .where('id', params.id)
       .first()
 
     if (!exercise) {
@@ -86,20 +100,21 @@ class ExerciseController {
         })
     }
 
-    const data = request.only(['id', 'title', 'image', 'category', 'type', 'video', 'description'])
-    const updateExercise = await Exercise
+    const data = request
+      .only(['title', 'image', 'category', 'type', 'video', 'description'])
+    const updatedExercise = await Exercise
       .update(exercise, data)
 
-    if (updateExercise.status !== 200) {
+    if (updatedExercise.status !== 200) {
       return response
-        .status(updateExercise.status)
+        .status(updatedExercise.status)
         .send({
-          result: updateExercise.result,
-          message: updateExercise.message,
+          result: updatedExercise.result,
+          message: updatedExercise.message,
         })
     }
 
-    exercise = updateExercise.result
+    exercise = updatedExercise.result
 
     return response
       .status(200)

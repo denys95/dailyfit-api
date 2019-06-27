@@ -11,21 +11,25 @@ module.exports = (Route) => {
    *
    * @apiSuccess {Number} status Status code.
    * @apiSuccess {Array} result Result object
-   * @apiSuccessExample {array} Success-Response:
-   [
+   * @apiSuccessExample {json} Success-Response:
    {
-      "id": 5,
-      "title": "Barbell Deadlift",
-      "category": "Gym",
-      ...
-   }, {
-      "id": 4,
-      "title": "Discover how you can sprint faster",
-      "category": "Athletics",
-      ...
-   },
-   ...
-   ]
+    "status": 200,
+    "result": [
+     {
+        "id": 5,
+        "title": "Barbell Deadlift",
+        "category": "Gym",
+        ...
+     }, {
+        "id": 4,
+        "title": "Discover how you can sprint faster",
+        "category": "Athletics",
+        ...
+     },
+     ...
+   ],
+   "message": ""
+   }
    */
   Route
     .get('/exercises', 'ExerciseController.getList')
@@ -36,26 +40,31 @@ module.exports = (Route) => {
    * @apiName Exercise
    * @apiGroup Exercises
    *
-   * @apiParam {String} email User email
-   * @apiParam {String} password User password
+   * @apiParam {String} title Title
+   * @apiParam {String} image Image URL
+   * @apiParam {String} category Category
+   * @apiParam {String} type Type
+   * @apiParam {String} video Video URL
+   * @apiParam {String} description Description
    *
    * @apiSuccess {Number} status Status code.
    * @apiSuccess {Array} result Result object
    * @apiSuccessExample {array} Success-Response:
-   [
    {
-      "id": 5,
-      "title": "Barbell Deadlift",
-      "category": "Gym",
-      ...
-   }, {
-      "id": 4,
-      "title": "Discover how you can sprint faster",
-      "category": "Athletics",
-      ...
-   },
-   ...
-   ]
+    "status": 201,
+    "result": {
+        "id": 1,
+        "title": "Barbell Deadlift",
+        "category": "Gym",
+        "image": "https://www.bodybuilding.com/fun/images/2013/deadlift-dominance-5-tips-for-massive-pulling-power_c.jpg",
+        "type": "Muscle Back",
+        "video": "https://www.youtube.com/watch?v=PUNxkzCjWNk",
+        "description": "This isn't the first time we've written about one of Barber's monstrous deadlifts, and we're guessing that it's nowhere near our last",
+        "created_at": "2019-06-27 13:07:39",
+        "updated_at": "2019-06-27 13:07:39"
+    },
+    "message": ""
+   }
    */
   Route
     .post('/exercises', 'ExerciseController.create')
