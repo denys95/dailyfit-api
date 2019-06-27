@@ -11,4 +11,4 @@ Route.get('/', () => ({
 Route.group(() => {
   AuthRoutes(Route)
   ExerciseRoutes(Route)
-}).prefix('/api')
+}).prefix('/api/v1')
