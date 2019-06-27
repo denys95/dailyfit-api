@@ -20,21 +20,8 @@
 
 
 const { Ignitor } = require('@adonisjs/ignitor')
-const pg = require('pg');
 
 new Ignitor(require('@adonisjs/fold'))
   .appRoot(__dirname)
   .fireHttpServer()
   .catch(console.error)
-
-app.get('/db', (request, response) => {
-  pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-    client.query('SELECT * FROM test_table', (err, result) => {
-      done();
-      if (err)
-      { console.error(err); response.send("Error " + err); }
-      else
-      { response.render('pages/db', {results: result.rows} ); }
-    });
-  });
-});
