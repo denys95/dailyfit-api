@@ -2,6 +2,8 @@
 
 const User = use('App/Models/User')
 const { validate } = use('Validator')
+const ErrorCodes = use('App/Constants/ErrorCodes')
+const ErrorMessages = use('App/Constants/ErrorMessages')
 
 class AuthController {
 
@@ -13,20 +15,32 @@ class AuthController {
 
     const rules = {
       email: 'required|email|unique:users,email',
-      password: 'required',
+      password: 'required|min:8',
     }
+
+    let errors = {}
 
     const validation = await validate(request.all(), rules)
 
     if (validation.fails()) {
-      // validation fails informs about only one problem at a time
-      return response.status(400)
-        .json({
-          type: 'error',
-          message: validation.messages()
-            .map(item => item.message)
-            .join(', ')
-        })
+      validation.messages().map(({ field }) => {
+        if (field === 'email') {
+          errors = {
+            ...errors,
+            [ErrorCodes.EMAIL_VALIDATION_ERROR]: ErrorMessages[ErrorCodes.EMAIL_VALIDATION_ERROR],
+          }
+        }
+        if (field === 'password') {
+          errors = {
+            ...errors,
+            [ErrorCodes.PASSWORD_VALIDATION_ERROR]: ErrorMessages[ErrorCodes.PASSWORD_VALIDATION_ERROR],
+          }
+        }
+      })
+
+      return response
+        .status(400)
+        .json({ errors })
     }
 
     const user = new User()
@@ -35,15 +49,19 @@ class AuthController {
 
     await user.save()
     const accessToken = await auth.generate(user, false)
-    return response.json({
-      user,
-      token: accessToken.token,
-    })
+    return response
+      .json({
+        user,
+        token: accessToken.token,
+      })
   }
 
   async login ({ request, auth, response }) {
     const email = request.input('email')
     const password = request.input('password')
+
+    let errors = {}
+
     try {
       await auth.attempt(email, password)
       const user = await User.findBy('email', email)
@@ -54,17 +72,24 @@ class AuthController {
           token: accessToken.token,
         })
       } else {
+        errors = {
+          ...errors,
+          [ErrorCodes.ACCOUNT_NOT_EXISTS]: ErrorMessages[ErrorCodes.ACCOUNT_NOT_EXISTS],
+        }
         return response.status(403)
           .send({
-            type: 'error',
-            message: 'You don\'t have access to this section',
+            errors,
           })
       }
     } catch (e) {
+      errors = {
+        ...errors,
+        [ErrorCodes.AUTHENTICATION_ERROR]: ErrorMessages[ErrorCodes.AUTHENTICATION_ERROR],
+        [ErrorCodes.AUTHORIZATION_ERROR]: ErrorMessages[ErrorCodes.AUTHORIZATION_ERROR],
+      }
       return response.status(400)
-        .json({
-          type: 'error',
-          message: 'You need to register first!',
+        .send({
+          errors,
         })
     }
   }

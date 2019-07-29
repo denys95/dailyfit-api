@@ -13,15 +13,12 @@ module.exports = (Route) => {
    * @apiSuccess {Object} result.user User model
    * @apiSuccessExample {json} Success-Response:
    {
-      "status": 200,
-      "result": {
-        "user": {
-            "id": 1,
-            "email": "user@mail.com",
-            ...
-        },
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-      }
+      "user": {
+          "id": 1,
+          "email": "user@mail.com",
+          ...
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
    }
    */
   Route
@@ -42,15 +39,12 @@ module.exports = (Route) => {
    * @apiSuccess {Object} result.user User model
    * @apiSuccessExample {json} Success-Response:
    {
-      "status": 200,
-      "result": {
-        "user": {
-            "id": 1,
-            "email": "user@mail.com",
-            ...
-        },
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-      }
+      "user": {
+          "id": 1,
+          "email": "user@mail.com",
+          ...
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
    }
    */
   Route
